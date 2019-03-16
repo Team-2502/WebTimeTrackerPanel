@@ -28,7 +28,8 @@ const getConfigContents = async () => {
     console.warn("Generating new config file...");
     // Default settings
     settings = {
-      apiToken: "lmaoooooooooo change me"
+      apiToken: "lmaoooooooooo change me",
+      apiEndpoint: "api.timetracker.team2502.com"
     };
 
     await fs.outputJson(configPath, settings);

@@ -1,40 +1,57 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {ElectronService} from "./electron.service";
 import {IConfig} from "../models/IConfig";
+import {HttpClient} from "@angular/common/http";
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class ConfigStorageService {
-  get config(): IConfig {
-    return this._config;
-  }
+    constructor(
+        private electronService: ElectronService,
+        private http: HttpClient
+    ) {
+    }
 
-  set config(value: IConfig) {
-    this._config = value;
-  }
+    private _config: IConfig;
 
-  private _config: IConfig;
+    get config(): IConfig {
+        return this._config;
+    }
 
-  constructor(
-      private electronService: ElectronService
-  ) {}
+    set config(value: IConfig) {
+        this._config = value;
+    }
 
-  public getSettings = async () => {
-    if(!this.electronService.isElectron()) return; // Don't get settings if we're not in Electron
+    private _fullAccess: boolean;
 
-    await new Promise((resolve, reject) => {
-      this.electronService.ipcRenderer.send("getConfig");
+    get fullAccess(): boolean {
+        return this._fullAccess;
+    }
 
-      const timeout = setTimeout(() => {
-        return reject(new Error("Config request timed out"));
-      }, 10_000);
+    set fullAccess(value: boolean) {
+        this._fullAccess = value;
+    }
 
-      this.electronService.ipcRenderer.on("gotConfig", (_, configData) => {
-          this.config = configData;
-          clearTimeout(timeout);
-          return resolve();
-      });
-    });
-  }
+    public getSettings = async () => {
+        if (!this.electronService.isElectron()) return; // Don't get settings if we're not in Electron
+
+        await new Promise((resolve, reject) => {
+            this.electronService.ipcRenderer.send("getConfig");
+
+            const timeout = setTimeout(() => {
+                return reject(new Error("Config request timed out"));
+            }, 10_000);
+
+            this.electronService.ipcRenderer.on("gotConfig", (_, configData) => {
+                this.config = configData;
+                clearTimeout(timeout);
+                return resolve();
+            });
+        });
+
+
+        console.log("doing full access check (" + this.config.apiEndpoint + "onLoad" + ")");
+        this.fullAccess = (await this.http.get<any>(this.config.apiEndpoint + "onLoad").toPromise()).isAuthorized;
+    }
 }

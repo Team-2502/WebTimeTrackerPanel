@@ -68,6 +68,10 @@
     "zone.js": "0.8.29"
   },
   "dependencies": {
-    "fs-extra": "^7.0.1"
+    "@angular/animations": "^7.2.9",
+    "bootstrap": "^4.0.0-alpha.6",
+    "fs-extra": "^7.0.1",
+    "material-design-icons-iconfont": "^4.0.5",
+    "typeface-raleway": "0.0.54"
   }
 }

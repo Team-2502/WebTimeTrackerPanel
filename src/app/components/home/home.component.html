@@ -1,1 +1,19 @@
-erereerwewrer3e
+<app-sidebar>
+    <div id="header">
+        <p>People in the room</p>
+    </div>
+
+    <div id="sessions">
+        <ul [@listStagger]="activePeople$" class="list-group">
+            <li *ngIf="len == 0" class="list-group-item">
+                <p id="nsf">No active people signed in</p>
+            </li>
+            <li *ngFor="let person of activePeople$" class="list-group-item">
+                {{ person.firstName }} {{ person.lastName }}
+            </li>
+            <li class="list-group-item">
+                ASD 123
+            </li>
+        </ul>
+    </div>
+</app-sidebar>

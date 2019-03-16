@@ -1,3 +1,4 @@
 export interface IConfig {
-    apiToken: string
+    apiToken: string,
+    apiEndpoint: string
 }

@@ -1,12 +1,12 @@
 import {TestBed} from '@angular/core/testing';
 
-import {ConfigStorageService} from './config-storage.service';
+import {APIService} from './api.service';
 
-describe('ConfigStorageService', () => {
+describe('APIService', () => {
     beforeEach(() => TestBed.configureTestingModule({}));
 
     it('should be created', () => {
-        const service: ConfigStorageService = TestBed.get(ConfigStorageService);
+        const service: APIService = TestBed.get(APIService);
         expect(service).toBeTruthy();
     });
 });

@@ -1,55 +1,78 @@
 import 'reflect-metadata';
 import '../polyfills';
-import { BrowserModule } from '@angular/platform-browser';
+import {BrowserModule} from '@angular/platform-browser';
 import {APP_INITIALIZER, NgModule} from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {FormsModule} from '@angular/forms';
 
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 
-import { AppRoutingModule } from './app-routing.module';
-
+import {AppRoutingModule} from './app-routing.module';
 // NG Translate
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
-import { ElectronService } from './providers/electron.service';
+import {ElectronService} from './providers/electron.service';
 
-import { WebviewDirective } from './directives/webview.directive';
+import {WebviewDirective} from './directives/webview.directive';
 
-import { AppComponent } from './app.component';
-import { HomeComponent } from './components/home/home.component';
+import {AppComponent} from './app.component';
+import {HomeComponent} from './components/home/home.component';
 import {ConfigStorageService} from "./providers/config-storage.service";
+import {TopComponent} from './components/top/top.component';
+import {APIInterceptor} from "./interceptors/api.interceptor";
+import {TokenInterceptor} from "./interceptors/token.interceptor";
+import {SidebarComponent} from './components/sidebar/sidebar.component';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 // Load the config from Electron on boot
 export function loadConfig(configStorageService: ConfigStorageService) {
-  return async () => await configStorageService.getSettings();
+    return async () => await configStorageService.getSettings();
 }
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+    return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    WebviewDirective
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    HttpClientModule,
-    AppRoutingModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: (HttpLoaderFactory),
-        deps: [HttpClient]
-      }
-    })
-  ],
-  providers: [ElectronService, {provide: APP_INITIALIZER, useFactory: loadConfig, deps: [ConfigStorageService], multi: true}],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        HomeComponent,
+        WebviewDirective,
+        TopComponent,
+        SidebarComponent
+    ],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        HttpClientModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: (HttpLoaderFactory),
+                deps: [HttpClient]
+            }
+        })
+    ],
+    providers: [
+        ElectronService,
+        {
+            provide: APP_INITIALIZER, useFactory: loadConfig, deps: [ConfigStorageService], multi: true
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: APIInterceptor,
+            multi: true
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: TokenInterceptor,
+            multi: true
+        }
+    ],
+    bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
