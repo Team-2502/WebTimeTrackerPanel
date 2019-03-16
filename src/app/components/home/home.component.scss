@@ -1,4 +1,5 @@
 #header {
+  text-align: center;
   p {
     font-size: 10vh;
     margin-bottom: 1vh;
@@ -12,10 +13,26 @@
   }
 }
 
-.list-group-item{
-  margin-right: 5rem;
+#active{
+  padding-left: 20%;
+  padding-top: 2vh;
+  padding-right: 20%;
 }
 
 .material-icons {
   cursor: pointer;
+  font-size: 1rem;
+}
+
+#npf{
+  width: 100%;
+  text-align: center;
+}
+
+.remove-user {
+  cursor: pointer;
+
+    width: 2rem;
+    height: 1.5rem;
+
 }

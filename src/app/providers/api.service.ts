@@ -9,6 +9,11 @@ export interface IEntryResponse {
     entries: Array<ITimeEntry>
 }
 
+export interface ActiveEntry {
+    user: IPerson,
+    timeStarted: string
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -28,11 +33,11 @@ export class APIService {
         )
     };
 
-    public getActive = async (): Promise<Array<IPerson>> => {
+    public getActive = async (): Promise<Array<ActiveEntry>> => {
         return (
             (await this.http.get<any>(
                 this.configStorageService.config.apiEndpoint + "findActive/"
-            ).toPromise()).activePeople as Array<IPerson>
+            ).toPromise()).activePeople
         )
     };
 
