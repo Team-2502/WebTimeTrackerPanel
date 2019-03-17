@@ -27,7 +27,7 @@ export class ActivePeopleService {
     })
   }
 
-  private updateList = async () => {
+  public updateList = async () => {
     this.activePeopleSource.next(await this.apiService.getActive());
   };
 }

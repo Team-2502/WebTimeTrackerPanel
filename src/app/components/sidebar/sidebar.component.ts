@@ -2,6 +2,9 @@ import {Component, ElementRef, Injectable, OnInit, ViewChild} from "@angular/cor
 import {NavigationEnd, Router} from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ConfigStorageService} from "../../providers/config-storage.service";
+import {IPerson} from "../../models/IPerson";
+import {APIService} from "../../providers/api.service";
+import {ActivePeopleService} from "../../providers/active-people.service";
 
 @Injectable({
     providedIn: "root"
@@ -14,10 +17,12 @@ import {ConfigStorageService} from "../../providers/config-storage.service";
 export class SidebarComponent implements OnInit {
     @ViewChild('signupModal', {read: ElementRef}) signupModal: ElementRef;
 
-    signupForm: FormGroup;
-    signupSubmitted: boolean;
-    signupLoading: boolean;
-    error: string;
+    public signupForm: FormGroup;
+    public signupSubmitted: boolean;
+    public signupLoading: boolean;
+    public error: string;
+
+    public personList: Array<IPerson> = [];
 
     public sidebarDisplayed: boolean;
     public currentUrl: string;
@@ -25,7 +30,9 @@ export class SidebarComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private router: Router,
-        public configStorageService: ConfigStorageService
+        public configStorageService: ConfigStorageService,
+        private apiService: APIService,
+        private activePeopleService: ActivePeopleService
     ) {
         this.signupForm = this.formBuilder.group({
             user: ['', Validators.compose([Validators.required, Validators.maxLength(50)])],
@@ -47,7 +54,37 @@ export class SidebarComponent implements OnInit {
         this.sidebarDisplayed = !this.sidebarDisplayed;
     };
 
-    public signUp = () => {
-        console.log("Reee")
+    public openSignUp = async () => {
+        this.personList = await this.apiService.getInactive();
+
+        this.signupModal.nativeElement.className = 'modal fade show';
+        this.signupModal.nativeElement.style = 'display: block;'
+    };
+
+    public closeSignUp = () => {
+        this.signupModal.nativeElement.className = 'modal hide';
+        this.signupModal.nativeElement.style = 'display: none;'
+
+    };
+
+    public signUp = async () => {
+        this.signupSubmitted = true;
+        if (this.signupForm.invalid) {
+            return;
+        }
+
+        this.signupLoading = true;
+
+        try{
+            await this.apiService.startTracking(this.signupForm.controls.user.value);
+            await this.activePeopleService.updateList();
+        }catch (e) {
+            this.error = e;
+            this.signupLoading = false;
+            return;
+        }
+        this.closeSignUp();
+        this.signupLoading = false;
+        this.personList = [];
     }
 }

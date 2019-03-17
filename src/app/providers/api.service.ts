@@ -41,6 +41,14 @@ export class APIService {
         )
     };
 
+    public getInactive = async (): Promise<Array<IPerson>> => {
+        return (
+            (await this.http.get<any>(
+                this.configStorageService.config.apiEndpoint + "viewInactive/"
+            ).toPromise()).inactivePeople
+        )
+    };
+
     public startTracking = async (user: string) => {
         return (
             (await this.http.get<any>(

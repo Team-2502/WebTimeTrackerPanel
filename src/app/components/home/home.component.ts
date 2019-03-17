@@ -1,6 +1,8 @@
 import {Component} from '@angular/core';
 import {animate, query, stagger, style, transition, trigger} from "@angular/animations";
 import {ActivePeopleService} from "../../providers/active-people.service";
+import {IPerson} from "../../models/IPerson";
+import {APIService} from "../../providers/api.service";
 
 @Component({
     selector: 'app-home',
@@ -22,8 +24,12 @@ import {ActivePeopleService} from "../../providers/active-people.service";
 })
 export class HomeComponent {
 
+    error: string;
+    loading: boolean = false;
+
     constructor(
-        private activePeopleService: ActivePeopleService
+        private activePeopleService: ActivePeopleService,
+        private apiService: APIService
     ) {}
 
     private getDateString = (d: string) => {
@@ -48,5 +54,16 @@ export class HomeComponent {
         }else{
             return n + " " + unit;
         }
+    }
+
+    private removeUser = async (user: IPerson) => {
+        try {
+            this.loading = true;
+            await this.apiService.endTracking(user._id);
+            await this.activePeopleService.updateList();
+        }catch (e) {
+            this.error = e;
+        }
+        this.loading = false;
     }
 }

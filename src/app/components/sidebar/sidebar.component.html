@@ -1,4 +1,4 @@
-<div [class.sidebarHidden]="!sidebarDisplayed" class="" id="panel">
+<div [class.sidebarHidden]="!sidebarDisplayed" id="panel">
     <div id="sidebar">
         <ul class="sidebar-content">
             <li [class.selected]="currentUrl == '/'" class="item">
@@ -8,7 +8,7 @@
                 <a routerLink="/top"><i class="material-icons">stars</i>Top</a>
             </li>
             <li [class.selected]="currentUrl == '/'" class="item" *ngIf="configStorageService.fullAccess">
-                <a href="#" data-target="#signupModel" data-toggle="modal"><i class="material-icons">exposure_plus_1</i>Sign in</a>
+                <a href="#" (click)="openSignUp()"><i class="material-icons">exposure_plus_1</i>Sign in</a>
             </li>
         </ul>
     </div>
@@ -27,14 +27,18 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="addModalLabel">Sign in</h5>
-                                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                                <button aria-label="Close" class="close" (click)="closeSignUp()" type="button">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="user">Select your name from below:</label>
-                                    <input class="form-control" formControlName="user" id="user" type="user"/>
+                                    <!--<input class="form-control" formControlName="user" id="user" type="user"/>-->
+                                    <select id="user" formControlName="user" class="form-control"
+                                            [ngClass]="{ 'is-invalid': signupSubmitted && signupForm.controls['user'].errors }">
+                                        <option *ngFor="let user of personList" [ngValue]="user._id">{{ user.firstName }} {{ user.lastName }}</option>
+                                    </select>
                                     <div *ngIf="signupSubmitted && signupForm.controls['user'].errors" class="invalid-feedback">
                                         <div *ngIf="signupForm.controls['user'].errors.required" class="invalid">Person is required</div>
                                     </div>
@@ -44,8 +48,8 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
-                                <button class="btn btn-primary" type="submit">Sign in</button>
+                                <button class="btn btn-secondary" (click)="closeSignUp()" type="button">Close</button>
+                                <button class="btn btn-primary" type="submit" [disabled]="signupLoading">Sign in</button>
                             </div>
                         </div>
                     </div>
