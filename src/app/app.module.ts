@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import '../polyfills';
 import {BrowserModule} from '@angular/platform-browser';
 import {APP_INITIALIZER, NgModule} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 
@@ -43,6 +43,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         SidebarComponent
     ],
     imports: [
+        ReactiveFormsModule,
         BrowserModule,
         FormsModule,
         HttpClientModule,

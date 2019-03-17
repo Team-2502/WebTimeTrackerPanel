@@ -34,21 +34,26 @@ export class ConfigStorageService {
     }
 
     public getSettings = async () => {
-        if (!this.electronService.isElectron()) return; // Don't get settings if we're not in Electron
+        if (this.electronService.isElectron()) {
+            await new Promise((resolve, reject) => {
+                this.electronService.ipcRenderer.send("getConfig");
 
-        await new Promise((resolve, reject) => {
-            this.electronService.ipcRenderer.send("getConfig");
+                const timeout = setTimeout(() => {
+                    return reject(new Error("Config request timed out"));
+                }, 10_000);
 
-            const timeout = setTimeout(() => {
-                return reject(new Error("Config request timed out"));
-            }, 10_000);
-
-            this.electronService.ipcRenderer.on("gotConfig", (_, configData) => {
-                this.config = configData;
-                clearTimeout(timeout);
-                return resolve();
+                this.electronService.ipcRenderer.on("gotConfig", (_, configData) => {
+                    this.config = configData;
+                    clearTimeout(timeout);
+                    return resolve();
+                });
             });
-        });
+        }else{
+            // We're running in the web! Use default config provided and carry on.
+            this.config = {
+                apiEndpoint: "http://localhost:8080/api/v1/",
+            }
+        }
 
 
         console.log("doing full access check (" + this.config.apiEndpoint + "onLoad" + ")");
