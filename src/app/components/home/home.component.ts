@@ -3,6 +3,7 @@ import {animate, query, stagger, style, transition, trigger} from "@angular/anim
 import {ActivePeopleService} from "../../providers/active-people.service";
 import {IPerson} from "../../models/IPerson";
 import {APIService} from "../../providers/api.service";
+import {TimeUtil} from "../../TimeUtil";
 
 @Component({
     selector: 'app-home',
@@ -40,21 +41,13 @@ export class HomeComponent {
         min -= hrs * 60;
 
         if (hrs > 0) {
-            return HomeComponent.numberPlural(hrs, "hour")  + " and " + HomeComponent.numberPlural(min, " minute") + " ago";
+            return TimeUtil.numberPlural(hrs, "hour")  + " and " + TimeUtil.numberPlural(min, " minute") + " ago";
         } else if (min < 1) {
             return "just now"
         } else {
-            return HomeComponent.numberPlural(min, "minute") + " ago";
+            return TimeUtil.numberPlural(min, "minute") + " ago";
         }
     };
-
-    private static numberPlural(n: number, unit: string){
-        if(n != 1){
-            return n + " " + unit + "s"
-        }else{
-            return n + " " + unit;
-        }
-    }
 
     private removeUser = async (user: IPerson) => {
         try {

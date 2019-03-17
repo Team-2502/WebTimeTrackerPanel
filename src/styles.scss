@@ -102,3 +102,19 @@ html, body {
     opacity: 1;
   }
 }
+
+#header {
+  padding-top: 15vh;
+  text-align: center;
+  p {
+    font-size: 10vh;
+    margin-bottom: 1vh;
+  }
+
+  @media only screen and (max-device-width: 1023px) {
+    p {
+      margin-top: 0;
+      font-size: 8vh;
+    }
+  }
+}

@@ -14,6 +14,11 @@ export interface ActiveEntry {
     timeStarted: string
 }
 
+export interface ITimeEntryResponse {
+    user: IPerson,
+    time: number
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -89,7 +94,7 @@ export class APIService {
         )
     };
 
-    public getTopUsers = async () => {
+    public getTopUsers = async (): Promise<Array<ITimeEntryResponse>> => {
         return (
             (await this.http.get<any>(
                 this.configStorageService.config.apiEndpoint + "top"
