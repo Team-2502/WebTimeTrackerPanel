@@ -46,6 +46,7 @@ export class SidebarComponent implements OnInit {
         this.router.events.subscribe(e => {
             if (e instanceof NavigationEnd) {
                 this.currentUrl = e.url;
+                console.log("current url: " + e.url);
             }
         });
     }
@@ -64,7 +65,6 @@ export class SidebarComponent implements OnInit {
     public closeSignUp = () => {
         this.signupModal.nativeElement.className = 'modal hide';
         this.signupModal.nativeElement.style = 'display: none;'
-
     };
 
     public signUp = async () => {
@@ -78,13 +78,12 @@ export class SidebarComponent implements OnInit {
         try{
             await this.apiService.startTracking(this.signupForm.controls.user.value);
             await this.activePeopleService.updateList();
+            this.closeSignUp();
+            this.personList = [];
         }catch (e) {
             this.error = e;
-            this.signupLoading = false;
             return;
         }
-        this.closeSignUp();
         this.signupLoading = false;
-        this.personList = [];
     }
 }

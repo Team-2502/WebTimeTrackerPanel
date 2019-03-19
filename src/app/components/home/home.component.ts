@@ -29,7 +29,7 @@ export class HomeComponent {
     loading: boolean = false;
 
     constructor(
-        private activePeopleService: ActivePeopleService,
+        public activePeopleService: ActivePeopleService,
         private apiService: APIService
     ) {}
 

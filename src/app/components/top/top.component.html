@@ -10,22 +10,6 @@
         <div class="card-deck mb-3 text-center">
             <div class="card mb-4 box-shadow">
                 <div class="card-header">
-                    <h4 class="my-0 font-weight-normal">3rd Place</h4>
-                </div>
-                <div class="card-body">
-                    <div *ngIf="third">
-                        <h1 class="card-title pricing-card-title">{{ third.user.firstName }}
-                            <small class="text-muted"> {{third.user.lastName}}</small>
-                        </h1>
-                        <p>{{ getDateString(third.time) }}</p>
-                    </div>
-                    <div *ngIf="!third">
-                        <p>This spot is available</p>
-                    </div>
-                </div>
-            </div>
-            <div class="card mb-4 box-shadow">
-                <div class="card-header">
                     <h4 class="my-0 font-weight-normal">1st Place</h4>
                 </div>
                 <div class="card-body">
@@ -33,7 +17,7 @@
                         <h1 class="card-title pricing-card-title">{{ first.user.firstName }}
                             <small class="text-muted"> {{first.user.lastName}}</small>
                         </h1>
-                        <p>{{getDateString(first.time)}}</p>
+                        <p>{{ getDateString(first.time) }}</p>
                     </div>
                     <div *ngIf="!first">
                         <p>This spot is available</p>
@@ -45,13 +29,29 @@
                     <h4 class="my-0 font-weight-normal">2nd Place</h4>
                 </div>
                 <div class="card-body">
-                    <div *ngIf="second">
+                    <div *ngIf="first">
                         <h1 class="card-title pricing-card-title">{{ second.user.firstName }}
                             <small class="text-muted"> {{second.user.lastName}}</small>
                         </h1>
                         <p>{{getDateString(second.time)}}</p>
                     </div>
                     <div *ngIf="!second">
+                        <p>This spot is available</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">3rd Place</h4>
+                </div>
+                <div class="card-body">
+                    <div *ngIf="third">
+                        <h1 class="card-title pricing-card-title">{{ third.user.firstName }}
+                            <small class="text-muted"> {{third.user.lastName}}</small>
+                        </h1>
+                        <p>{{getDateString(third.time)}}</p>
+                    </div>
+                    <div *ngIf="!third">
                         <p>This spot is available</p>
                     </div>
                 </div>

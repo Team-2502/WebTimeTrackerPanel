@@ -1,0 +1,56 @@
+<app-sidebar>
+    <div #removeModal aria-hidden="true" aria-labelledby="removeModal" class="modal fade" id="removeModal" role="dialog"
+         tabindex="-1" *ngIf="removeTarget">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addModalLabel">Are you sure?</h5>
+                        <button aria-label="Close" class="close" (click)="closeRemove()" type="button">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div *ngIf="error" class="invalid-feedback">
+                            <div class="invalid bigerror">Failed to remove person; {{ error }}</div>
+                        </div>
+                        <p>Are you sure you want to remove the user {{ removeTarget.firstName }} {{ removeTarget.lastName }}?</p>
+                        <p><b>Warning: </b> This action will remove all time entries for the selected user and is irreversible.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" (click)="closeRemove()">Close</button>
+                        <button class="btn btn-danger"[disabled]="removeLoading" (click)="removeUser(removeTarget)">Remove</button>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <div *ngIf="loading" id="loading">
+        <div class="spinner"></div>
+        <p>Please wait...</p>
+    </div>
+    <div class="row" id="users" *ngIf="!loading">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    Manage users
+                </div>
+                <div class="card-block">
+                    <ul *ngIf="users.length > 0" class="list-group">
+                        <li *ngFor="let user of users" class="list-group-item justify-content-between">
+                            {{ user.firstName }} {{ user.lastName }}
+                            <span (click)="openRemove(user)" class="badge badge-default badge-pill remove-user"><i
+                                    class="material-icons">clear</i></span>
+                        </li>
+                    </ul>
+                    <p *ngIf="users.length < 1" id="empty-list">There seems to be nothing here...</p>
+                </div>
+                <div class="card-footer text-muted">
+                    <button class="btn btn-success btn-lg btn-block add-user" data-target="#addModal"
+                            data-toggle="modal"
+                            type="button">
+                        Add user
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-sidebar>

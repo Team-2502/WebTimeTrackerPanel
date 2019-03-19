@@ -7,8 +7,11 @@
             <li [class.selected]="currentUrl == '/top'" class="item">
                 <a routerLink="/top"><i class="material-icons">stars</i>Top</a>
             </li>
-            <li [class.selected]="currentUrl == '/'" class="item" *ngIf="configStorageService.fullAccess">
-                <a href="#" (click)="openSignUp()"><i class="material-icons">exposure_plus_1</i>Sign in</a>
+            <li class="item" *ngIf="configStorageService.fullAccess">
+                <a href="javascript:void(0)" (click)="openSignUp()"><i class="material-icons">exposure_plus_1</i>Sign in</a>
+            </li>
+            <li class="item" *ngIf="configStorageService.fullAccess">
+                <a routerLink="/settings"><i class="material-icons">settings</i>Settings</a>
             </li>
         </ul>
     </div>
