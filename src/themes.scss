@@ -8,60 +8,6 @@ $link-color: $pink;
 $body-bg: $gray;
 $font-family-sans-serif: "Raleway", Roboto, "Helvetica Neue", Arial, sans-serif;
 
-$spacer: 1rem !default;
-$spacer-x: $spacer !default;
-$spacer-y: $spacer !default;
-$spacers: (
-        0: (
-                x: 0,
-                y: 0
-        ),
-        1: (
-                x: (
-                        $spacer-x * 0.25
-                ),
-                y: (
-                        $spacer-y * 0.25
-                )
-        ),
-        2: (
-                x: (
-                        $spacer-x * 0.5
-                ),
-                y: (
-                        $spacer-y * 0.5
-                )
-        ),
-        3: (
-                x: $spacer-x,
-                y: $spacer-y
-        ),
-        4: (
-                x: (
-                        $spacer-x * 1.5
-                ),
-                y: (
-                        $spacer-y * 1.5
-                )
-        ),
-        5: (
-                x: (
-                        $spacer-x * 3
-                ),
-                y: (
-                        $spacer-y * 3
-                )
-        ),
-        6: (
-                x: (
-                        $spacer-x * 9
-                ),
-                y: (
-                        $spacer-y * 9
-                )
-        )
-);
-
 @import "../node_modules/bootstrap/scss/bootstrap";
 
 body {

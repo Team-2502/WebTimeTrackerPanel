@@ -24,6 +24,7 @@ import {TokenInterceptor} from "./interceptors/token.interceptor";
 import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { SettingsComponent } from './components/settings/settings.component';
+import { LoginComponent } from './components/login/login.component';
 
 // Load the config from Electron on boot
 export function loadConfig(configStorageService: ConfigStorageService) {
@@ -42,7 +43,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         WebviewDirective,
         TopComponent,
         SidebarComponent,
-        SettingsComponent
+        SettingsComponent,
+        LoginComponent
     ],
     imports: [
         ReactiveFormsModule,

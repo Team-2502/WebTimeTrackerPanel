@@ -5,6 +5,7 @@ import {ConfigStorageService} from "../../providers/config-storage.service";
 import {IPerson} from "../../models/IPerson";
 import {APIService} from "../../providers/api.service";
 import {ActivePeopleService} from "../../providers/active-people.service";
+import {AuthService} from "../../providers/auth.service";
 
 @Injectable({
     providedIn: "root"
@@ -30,9 +31,9 @@ export class SidebarComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private router: Router,
-        public configStorageService: ConfigStorageService,
         private apiService: APIService,
-        private activePeopleService: ActivePeopleService
+        private activePeopleService: ActivePeopleService,
+        public authService: AuthService
     ) {
         this.signupForm = this.formBuilder.group({
             user: ['', Validators.compose([Validators.required, Validators.maxLength(50)])],
@@ -50,6 +51,8 @@ export class SidebarComponent implements OnInit {
             }
         });
     }
+
+    public checkMentor = (): boolean => this.authService.cachedAuthResponse && this.authService.cachedAuthResponse.role == 'mentor';
 
     public toggleSidebar = () => {
         this.sidebarDisplayed = !this.sidebarDisplayed;

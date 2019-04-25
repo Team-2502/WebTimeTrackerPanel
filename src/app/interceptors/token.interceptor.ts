@@ -11,10 +11,11 @@ export class TokenInterceptor implements HttpInterceptor {
     }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        if (this.configStorageService.config && this.configStorageService.config.apiToken) {
+        const currentUser = JSON.parse(localStorage.getItem('session'));
+        if (currentUser && currentUser.token) {
             request = request.clone({
                 setHeaders: {
-                    Authorization: `Bearer ${this.configStorageService.config.apiToken}`
+                    Authorization: `Bearer ${currentUser.token}`
                 }
             });
         }
