@@ -64,6 +64,8 @@ export class AuthService {
     this.cachedAuthResponse = undefined;
   };
 
+  public checkMentor = (): boolean => this.cachedAuthResponse && this.cachedAuthResponse.role == 'mentor';
+
   public checkLoggedIn = (): boolean => {
     const user = this.cachedAuthResponse;
     if (user) {

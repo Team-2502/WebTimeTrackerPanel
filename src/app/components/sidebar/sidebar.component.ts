@@ -52,8 +52,6 @@ export class SidebarComponent implements OnInit {
         });
     }
 
-    public checkMentor = (): boolean => this.authService.cachedAuthResponse && this.authService.cachedAuthResponse.role == 'mentor';
-
     public toggleSidebar = () => {
         this.sidebarDisplayed = !this.sidebarDisplayed;
     };

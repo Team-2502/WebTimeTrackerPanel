@@ -4,6 +4,7 @@ import {ActivePeopleService} from "../../providers/active-people.service";
 import {IPerson} from "../../models/IPerson";
 import {APIService} from "../../providers/api.service";
 import {TimeUtil} from "../../TimeUtil";
+import {AuthService} from "../../providers/auth.service";
 
 @Component({
     selector: 'app-home',
@@ -30,7 +31,8 @@ export class HomeComponent {
 
     constructor(
         public activePeopleService: ActivePeopleService,
-        private apiService: APIService
+        private apiService: APIService,
+        public authService: AuthService
     ) {}
 
     private getDateString = (d: string) => {

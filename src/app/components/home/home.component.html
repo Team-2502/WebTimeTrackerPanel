@@ -19,7 +19,7 @@
                     class="list-group-item d-flex justify-content-between align-items-center">
                     {{ entry.user.firstName }} {{ entry.user.lastName }} - Active
                     since {{ getDateString(entry.timeStarted) }}
-                    <span class="badge badge-default badge-pill remove-user"><i
+                    <span class="badge badge-default badge-pill remove-user" *ngIf="authService.checkMentor()"><i
                             class="material-icons" (click)="removeUser(entry.user)">clear</i></span>
                 </li>
             </ul>

@@ -50,6 +50,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
     },
+    icon: __dirname + "./src/assets/favicon.ico"
   });
 
   if (serve) {
