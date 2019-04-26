@@ -32,11 +32,6 @@ export function loadConfig(configStorageService: ConfigStorageService) {
     return async () => await configStorageService.getSettings();
 }
 
-// AoT requires an exported function for factories
-export function HttpLoaderFactory(http: HttpClient) {
-    return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-}
-
 @NgModule({
     declarations: [
         AppComponent,
@@ -54,14 +49,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         FormsModule,
         HttpClientModule,
         AppRoutingModule,
-        BrowserAnimationsModule,
-        TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: (HttpLoaderFactory),
-                deps: [HttpClient]
-            }
-        })
+        BrowserAnimationsModule
     ],
     providers: [
         ElectronService,
