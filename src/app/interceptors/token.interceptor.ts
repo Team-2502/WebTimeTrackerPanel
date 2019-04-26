@@ -13,11 +13,14 @@ export class TokenInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const currentUser = JSON.parse(localStorage.getItem('session'));
         if (currentUser && currentUser.token) {
+            console.log("Appended token to request");
             request = request.clone({
                 setHeaders: {
                     Authorization: `Bearer ${currentUser.token}`
                 }
             });
+        }else{
+            console.log("Skipping clone due to lack of token")
         }
 
         return next.handle(request);

@@ -16,6 +16,9 @@
             <li class="item" *ngIf="checkMentor()">
                 <a routerLink="/settings"><i class="material-icons">settings</i>Settings</a>
             </li>
+            <li class="item" *ngIf="authService.checkLoggedIn()">
+                <a routerLink="/logout"><i class="material-icons">lock</i>Logout</a>
+            </li>
         </ul>
     </div>
     <div id="panel-content">

@@ -4,6 +4,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {TopComponent} from "./components/top/top.component";
 import {SettingsComponent} from "./components/settings/settings.component";
 import {LoginComponent} from "./components/login/login.component";
+import {LogoutComponent} from "./components/logout/logout.component";
 
 const routes: Routes = [
     {
@@ -21,6 +22,10 @@ const routes: Routes = [
     {
         path: 'login',
         component: LoginComponent
+    },
+    {
+        path: 'logout',
+        component: LogoutComponent
     }
 ];
 

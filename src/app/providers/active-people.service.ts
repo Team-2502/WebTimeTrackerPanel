@@ -28,6 +28,9 @@ export class ActivePeopleService {
   }
 
   public updateList = async () => {
-    this.activePeopleSource.next(await this.apiService.getActive());
+    let activePeople = await this.apiService.getActive();
+    activePeople = activePeople.filter(entry => entry.user); // Filter out null users
+
+    this.activePeopleSource.next(activePeople);
   };
 }
