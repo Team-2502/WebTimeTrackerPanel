@@ -24,7 +24,7 @@ body {
     padding-left: $sidebar-width;
   }
 
-  #content{
+  #content {
     padding-left: 2rem;
   }
 
@@ -59,6 +59,17 @@ body {
     }
 
     color: #fff;
+
+    #infobar {
+      float: right;
+      width: 14rem;
+      margin-right: .5rem;
+      margin-top: .7rem;
+
+      .bold {
+        font-weight: bold;
+      }
+    }
 
     h3 {
       margin-left: 1rem;
@@ -154,6 +165,6 @@ body {
   }
 }
 
-#signupModel{
+#signupModel {
   color: black;
 }

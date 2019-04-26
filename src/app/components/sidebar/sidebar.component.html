@@ -27,6 +27,9 @@
                     class="material-icons switch-arrow">arrow_right</i></button>
             <button *ngIf="sidebarDisplayed" (click)="toggleSidebar()" type="button" class="btn btn-primary"><i
                     class="material-icons switch-arrow">arrow_left</i></button>
+            <div id="infobar">
+                <span class="bold">Current Time: </span>{{time}}
+            </div>
         </div>
         <div id="content">
             <div #signupModal aria-hidden="true" aria-labelledby="signupModel" class="modal fade" id="signupModel" role="dialog"

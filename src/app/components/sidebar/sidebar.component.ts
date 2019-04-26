@@ -1,11 +1,12 @@
-import {Component, ElementRef, Injectable, OnInit, ViewChild} from "@angular/core";
+import {Component, ElementRef, Injectable, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {NavigationEnd, Router} from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ConfigStorageService} from "../../providers/config-storage.service";
 import {IPerson} from "../../models/IPerson";
 import {APIService} from "../../providers/api.service";
 import {ActivePeopleService} from "../../providers/active-people.service";
 import {AuthService} from "../../providers/auth.service";
+import {Subscription, interval} from "rxjs";
+
 
 @Injectable({
     providedIn: "root"
@@ -15,7 +16,7 @@ import {AuthService} from "../../providers/auth.service";
     templateUrl: "./sidebar.component.html",
     styleUrls: ["./sidebar.component.scss"]
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, OnDestroy {
     @ViewChild('signupModal', {read: ElementRef}) signupModal: ElementRef;
 
     public signupForm: FormGroup;
@@ -27,6 +28,9 @@ export class SidebarComponent implements OnInit {
 
     public sidebarDisplayed: boolean;
     public currentUrl: string;
+
+    public timeSubscription: Subscription;
+    public time: string;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -50,6 +54,25 @@ export class SidebarComponent implements OnInit {
                 console.log("current url: " + e.url);
             }
         });
+
+        this.timeSubscription = interval(1000).subscribe(() => {
+            const date = new Date();
+            const unit = (date.getHours() < 12) ? 'AM' : 'PM';
+
+            let hour: string | number = (date.getHours() < 12) ? date.getHours() : date.getHours() - 12;
+            let minutes: string | number = date.getMinutes();
+            let seconds: string | number = date.getSeconds();
+
+            if(hour < 10) hour = '0' + hour;
+            if(minutes < 10) minutes = '0' + minutes;
+            if(seconds < 10) seconds = '0' + seconds;
+
+            this.time = `${hour}:${minutes}:${seconds} ${unit}`;
+        })
+    }
+
+    public ngOnDestroy(): void {
+        if(this.timeSubscription) this.timeSubscription.unsubscribe();
     }
 
     public toggleSidebar = () => {
