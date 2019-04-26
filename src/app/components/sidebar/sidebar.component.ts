@@ -55,20 +55,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
             }
         });
 
-        this.timeSubscription = interval(1000).subscribe(() => {
-            const date = new Date();
-            const unit = (date.getHours() < 12) ? 'AM' : 'PM';
-
-            let hour: string | number = (date.getHours() < 12) ? date.getHours() : date.getHours() - 12;
-            let minutes: string | number = date.getMinutes();
-            let seconds: string | number = date.getSeconds();
-
-            if(hour < 10) hour = '0' + hour;
-            if(minutes < 10) minutes = '0' + minutes;
-            if(seconds < 10) seconds = '0' + seconds;
-
-            this.time = `${hour}:${minutes}:${seconds} ${unit}`;
-        })
+        this.updateTime();
+        this.timeSubscription = interval(1000).subscribe(() => this.updateTime());
     }
 
     public ngOnDestroy(): void {
@@ -77,6 +65,21 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
     public toggleSidebar = () => {
         this.sidebarDisplayed = !this.sidebarDisplayed;
+    };
+
+    public updateTime = () => {
+        const date = new Date();
+        const unit = (date.getHours() < 12) ? 'AM' : 'PM';
+
+        let hour: string | number = (date.getHours() < 12) ? date.getHours() : date.getHours() - 12;
+        let minutes: string | number = date.getMinutes();
+        let seconds: string | number = date.getSeconds();
+
+        if(hour < 10) hour = '0' + hour;
+        if(minutes < 10) minutes = '0' + minutes;
+        if(seconds < 10) seconds = '0' + seconds;
+
+        this.time = `${hour}:${minutes}:${seconds} ${unit}`;
     };
 
     public openSignUp = async () => {
