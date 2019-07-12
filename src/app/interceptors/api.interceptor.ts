@@ -11,12 +11,9 @@ export class APIInterceptor implements HttpInterceptor {
     ) { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        console.log('kms: ' + next);
         return next.handle(request).pipe(catchError(err => {
             if (err.status === 401) {
                 // auto logout if 401 response returned from api
-
-                // TODO: remove repeated code
 
                 // remove user from local storage to log user out
                 localStorage.removeItem('session');
@@ -25,10 +22,7 @@ export class APIInterceptor implements HttpInterceptor {
                 // Make sure we clear the server on logout
                 location.reload(true);
             }
-
-            console.log("intercept err: " + JSON.stringify(err));
-
-            const error = err.error.message|| err.statusText;
+            const error = err.removeError.message|| err.statusText;
             return throwError(error);
         }));
     }

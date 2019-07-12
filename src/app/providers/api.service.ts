@@ -102,15 +102,6 @@ export class APIService {
         )
     };
 
-    public addUser = async (user: IPerson) => {
-        return (
-            (await this.http.post<any>(
-                this.configStorageService.config.apiEndpoint + "top",
-                user
-            ).toPromise())
-        )
-    };
-
     public getEntries = async (user: IPerson): Promise<IEntryResponse> => {
         return (
             (await this.http.post<any>(

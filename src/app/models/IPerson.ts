@@ -5,4 +5,5 @@ export interface IPerson {
     firstName: string;
     lastName: string;
     role: Role;
+    canSignup: boolean;
 }

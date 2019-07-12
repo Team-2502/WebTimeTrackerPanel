@@ -5,6 +5,7 @@ import {TopComponent} from "./components/top/top.component";
 import {SettingsComponent} from "./components/settings/settings.component";
 import {LoginComponent} from "./components/login/login.component";
 import {LogoutComponent} from "./components/logout/logout.component";
+import {CheckMentorGuard} from "./check-mentor.guard";
 
 const routes: Routes = [
     {
@@ -17,7 +18,8 @@ const routes: Routes = [
     },
     {
         path: 'settings',
-        component: SettingsComponent
+        component: SettingsComponent,
+        canActivate: [CheckMentorGuard]
     },
     {
         path: 'login',

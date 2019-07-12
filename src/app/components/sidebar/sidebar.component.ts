@@ -45,13 +45,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
     }
 
     public ngOnInit() {
-        // TODO: debugging
         this.sidebarDisplayed = true;
 
         this.router.events.subscribe(e => {
             if (e instanceof NavigationEnd) {
                 this.currentUrl = e.url;
-                console.log("current url: " + e.url);
             }
         });
 

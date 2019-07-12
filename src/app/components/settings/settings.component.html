@@ -1,27 +1,139 @@
 <app-sidebar>
     <div #removeModal aria-hidden="true" aria-labelledby="removeModal" class="modal fade" id="removeModal" role="dialog"
          tabindex="-1" *ngIf="removeTarget">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="removeModelLabel">Are you sure?</h5>
+                    <button aria-label="Close" class="close" (click)="closeRemove()" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div *ngIf="removeError" class="invalid-feedback">
+                        <div class="invalid bigerror">Failed to remove person; {{ removeError }}</div>
+                    </div>
+                    <p>Are you sure you want to remove the user {{ removeTarget.firstName }} {{ removeTarget.lastName }}
+                        ?</p>
+                    <p><b>Warning: </b> This action will remove all time entries for the selected user and is
+                        irreversible.</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" (click)="closeRemove()">Close</button>
+                    <button class="btn btn-danger" [disabled]="removeLoading" (click)="removeUser(removeTarget)">
+                        Remove
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div #addModal aria-hidden="true" aria-labelledby="addModal" class="modal fade" id="addModal" role="dialog"
+         tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form (ngSubmit)="addUser()" [formGroup]="addForm">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addModalLabel">Are you sure?</h5>
-                        <button aria-label="Close" class="close" (click)="closeRemove()" type="button">
+                        <h5 class="modal-title" id="addModalLabel">Add user</h5>
+                        <button aria-label="Close" class="close" (click)="closeAdd()" type="button">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div *ngIf="error" class="invalid-feedback">
-                            <div class="invalid bigerror">Failed to remove person; {{ error }}</div>
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input autocomplete="firstName" id="firstName" formControlName="firstName"
+                                   class="form-control"
+                                   [ngClass]="{ 'is-invalid': addSubmitted && addForm.controls['firstName'].errors }"/>
+                            <div *ngIf="addSubmitted && addForm.controls['firstName'].errors" class="invalid-feedback">
+                                <div class="invalid" *ngIf="addForm.controls['firstName'].errors.required">First name is
+                                    required
+                                </div>
+                            </div>
                         </div>
-                        <p>Are you sure you want to remove the user {{ removeTarget.firstName }} {{ removeTarget.lastName }}?</p>
-                        <p><b>Warning: </b> This action will remove all time entries for the selected user and is irreversible.</p>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input autocomplete="lastName" id="lastName" formControlName="lastName"
+                                   class="form-control"
+                                   [ngClass]="{ 'is-invalid': addSubmitted && addForm.controls['lastName'].errors }"/>
+                            <div *ngIf="addSubmitted && addForm.controls['lastName'].errors" class="invalid-feedback">
+                                <div class="invalid" *ngIf="addForm.controls['lastName'].errors.required">Last name is
+                                    required
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input autocomplete="username" id="email" type="email" formControlName="email" class="form-control"
+                                   [ngClass]="{ 'is-invalid': addSubmitted && addForm.controls['email'].errors }"/>
+                            <div *ngIf="addSubmitted && addForm.controls['email'].errors" class="invalid-feedback">
+                                <div class="invalid" *ngIf="addForm.controls['email'].errors.required">Email is required</div>
+                                <div class="invalid"
+                                     *ngIf="addForm.controls['email'].invalid && !(addForm.controls['email'].errors.required)">Email is
+                                    invalid
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="role">Role</label>
+                            <select [ngClass]="{ 'is-invalid': addSubmitted && addForm.controls['role'].errors }"
+                                    class="form-control" formControlName="role"
+                                    id="role">
+                                <option value="student">Student</option>
+                                <option value="mentor">Mentor</option>
+                            </select>
+                            <div *ngIf="addSubmitted && addForm.controls['role'].errors" class="invalid-feedback">
+                                <div *ngIf="addForm.controls['role'].errors.required" class="invalid">Role is required
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input autocomplete="new-password" id="password" type="password" formControlName="password" class="form-control"
+                                   [ngClass]="{ 'is-invalid': addSubmitted && addForm.controls['password'].errors }"/>
+                            <div *ngIf="addSubmitted && addForm.controls['password'].errors" class="invalid-feedback">
+                                <div class="invalid" *ngIf="addForm.controls['password'].errors.required">Password is required</div>
+                                <div class="invalid"
+                                     *ngIf="!(addForm.controls['password'].errors.required)">
+                                    Please pick a stronger password
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm password</label>
+                            <input autocomplete="new-password" id="confirmPassword" type="password" formControlName="confirmPassword"
+                                   class="form-control"
+                                   [ngClass]="{ 'is-invalid': addSubmitted && addForm.controls['confirmPassword'].errors }"/>
+                            <div *ngIf="addSubmitted && addForm.controls['confirmPassword'].errors" class="invalid-feedback">
+                                <div class="invalid" *ngIf="addForm.controls['confirmPassword'].errors.required">You must type your
+                                    password twice.
+                                </div>
+                                <div class="invalid"
+                                     *ngIf="!(addForm.controls['confirmPassword'].errors.required) && addForm.controls['confirmPassword'].errors.MatchPassword">
+                                    Passwords do not match.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="canSignup">Visible</label>
+                            <input type="checkbox" [checked]="true" formControlName="canSignup" class="form-control" id="canSignup"
+                                   [ngClass]="{ 'is-invalid': addSubmitted && addForm.controls['canSignup'].errors }"/>
+                            <div *ngIf="addSubmitted && addForm.controls['canSignup'].errors" class="invalid-feedback">
+                                <div class="invalid" *ngIf="addForm.controls['canSignup'].errors.required">Visibility is required</div>
+                            </div>
+                        </div>
+                        <div *ngIf="addError" class="invalid-feedback">
+                            <div class="invalid bigerror">Failed to add user; {{ addError }}</div>
+                        </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" (click)="closeRemove()">Close</button>
-                        <button class="btn btn-danger"[disabled]="removeLoading" (click)="removeUser(removeTarget)">Remove</button>
+                        <button class="btn btn-secondary" (click)="closeAdd()" type="button">Close</button>
+                        <button [disabled]="addLoading" class="btn btn-primary"
+                                type="submit">Add user
+                        </button>
                     </div>
-                </div>
+                </form>
             </div>
+        </div>
     </div>
     <div *ngIf="loading" id="loading">
         <div class="spinner"></div>
@@ -44,8 +156,7 @@
                     <p *ngIf="users.length < 1" id="empty-list">There seems to be nothing here...</p>
                 </div>
                 <div class="card-footer text-muted">
-                    <button class="btn btn-success btn-lg btn-block add-user" data-target="#addModal"
-                            data-toggle="modal"
+                    <button class="btn btn-success btn-lg btn-block add-user" (click)="openAdd()"
                             type="button">
                         Add user
                     </button>

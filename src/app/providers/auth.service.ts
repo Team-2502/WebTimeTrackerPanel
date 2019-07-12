@@ -25,6 +25,15 @@ export interface IAuthResponse {
   role: Role;
 }
 
+export interface IRegisterPayload {
+  firstName: string;
+  lastName: string;
+  role: Role;
+  password: string;
+  email: string;
+  canSignup: boolean
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -53,6 +62,9 @@ export class AuthService {
 
   private _cachedAuthResponse: IAuthResponse;
 
+  public register = async (registerPayload: IRegisterPayload): Promise<void> => {
+      await this.httpService.post(this.configStorageService.config.apiEndpoint + "user/add", registerPayload).toPromise();
+  };
 
   public login = async (loginPayload: ITokenPayload): Promise<void> => {
     const res: any = await this.httpService.post(this.configStorageService.config.apiEndpoint + "user/login", loginPayload).toPromise();
