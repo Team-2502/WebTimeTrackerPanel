@@ -20,19 +20,19 @@
         "!tslint.json"
     ],
   "win": {
-    "icon": "dist",
+    "icon": "dist/assets/mstile-310x310.png",
     "target": [
       "portable"
     ]
   },
   "mac": {
-    "icon": "dist",
+    "icon": "dist/assets/mstile-310x310.png",
     "target": [
       "dmg"
     ]
   },
   "linux": {
-    "icon": "dist",
+    "icon": "dist/assets/mstile-310x310.png",
     "target": [
       "AppImage"
     ]
