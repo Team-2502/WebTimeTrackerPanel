@@ -51,7 +51,7 @@ export class ConfigStorageService {
         }else{
             // We're running in the web! Use default config provided and carry on.
             this.config = {
-                apiEndpoint: "http://localhost:8080/api/v1/",
+                apiEndpoint: "https://tt.ephs.club/api/v1/",
             }
         }
 
